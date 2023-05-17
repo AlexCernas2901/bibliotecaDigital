@@ -6,22 +6,24 @@ const { usersModel } = require("../models");
 // sesion de usuarios
 const authMiddleware = async (req, res, next) => {
     try {
-        if(!req.headers.authorization) {
+        if (!req.session.data || !req.session.data.token) {
             handdleHttpError(res, "NO TOKEN EXISTS", 401);
-            return
+            return;
         }
-        const token = req.headers.authorization.split(" ").pop();
-        const tokenData = await verifyToken(token);
-        if(!tokenData._id) {
+        
+        const tokenData = await verifyToken(req.session.data.token);
+        
+        if (!tokenData._id) {
             handdleHttpError(res, "NO ID EXISTS", 401);
-            return
+            return;
         }
+        
         const user = await usersModel.findById(tokenData._id);
-        req.user = user
+        req.user = user;
         next();
     } catch (e) {
         handdleHttpError(res, "ERROR NO SESSION", 401);
     }
-}
+};
 
 module.exports = authMiddleware;

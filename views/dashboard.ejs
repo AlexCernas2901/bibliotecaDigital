@@ -1,0 +1,17 @@
+<!-- login.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+</head>
+<body>
+  <h3>Biblioteca digital</h3>
+  <p>Bienvenido <%= data.user.name %></p>
+  <form action="/auth/getFile" method="post">
+    <input type="text" id="buscar" name="buscar" placeholder="Buscar">
+   <button type="submit">Buscar</button>
+  </form>
+</body>
+</html>
+
+

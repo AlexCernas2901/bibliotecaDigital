@@ -26,29 +26,37 @@ const registerController = async (req, res) => {
 // declarando controlador para login de usuarios
 const loginController = async (req, res) => {
     try {
-        req = matchedData(req);
-        const user = await usersModel.findOne({ matricula:req.matricula })
+      const requestData = matchedData(req);
+      const user = await usersModel
+        .findOne({ matricula: requestData.matricula })
         .select("name matricula password role");
-        if (!user) {
-            handdleHttpError(res, "USER NO EXISTS", 404);
-            return;
-        }
-        const hashPassword = user.get("password");
-        const check = await compare(req.password, hashPassword);
-        if (!check) {
-            handdleHttpError(res, "INVALID PASSWORD", 401);
-            return;
-        }
-        user.set("password", undefined, { strict:false });
-        const data = {
-            token: await signToken(user),
-            user
-        };
-        res.send({ data });
+  
+      if (!user) {
+        handdleHttpError(res, "USER NO EXISTS", 404);
+        return;
+      }
+  
+      const hashPassword = user.get("password");
+      const check = await compare(requestData.password, hashPassword);
+  
+      if (!check) {
+        handdleHttpError(res, "INVALID PASSWORD", 401);
+        return;
+      }
+  
+      user.set("password", undefined, { strict: false });
+      const data = {
+        token: await signToken(user),
+        user,
+      };
+      console.log(req.session);
+      req.session.data = data;
+      res.redirect("/files");
     } catch (e) {
-        handdleHttpError(res, "ERROR REGISTER USER");
+      console.error("ERROR REGISTER USER:", e);
+      handdleHttpError(res, "ERROR REGISTER USER");
     }
-};
+  };
 
 module.exports = { 
     loginController, 

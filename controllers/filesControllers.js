@@ -9,28 +9,14 @@ const MEDIA_PATH = `${__dirname}/../storage`;
 // declarando controlador para obtener archivos
 const getFiles = async (req, res) => {
   try {
-    const user = req.user;
-    const data = await filesModel.find({});
-    console.log(data);
-    res.send({ data, user });
+    const user = req.session.data.user;
+    const filesData = await filesModel.find({});
+    console.log(user, filesData);
+    res.render("files", { filesData, user });
   } catch (e) {
     handdleHttpError(res, "ERROR GETTING FILES");
   }
 };
-
-// declarando controlador para editar archivo
-// const editFile = async (req, res) => {
-//   try {
-//     req = matchedData(req);
-//     const { id } = req;
-//     const data = await filesModel.findById({ _id: id });
-//     console.log(data);
-//     res.send({ data });
-//   } catch (e) {
-//     handdleHttpError(res, "ERROR EDITING FILE");
-//   }
-// };
-
 // declarando controlador para obtener archivo por ID
 const getFile = async (req, res) => {
   try {
@@ -62,19 +48,6 @@ const deleteFile = async (req, res) => {
   }
 };
 
-// declarando controlador para actualizar un archivo
-// const updateFile = async (req, res) => {
-//   try {
-//     // obteniendo 2 objetos a travez de uno
-//     const { id, ...body } = matchedData(req);
-//     const data = await filesModel.findOneAndUpdate(id, body);
-//     console.log(data);
-//     res.send({ data });
-//   } catch (e) {
-//     handdleHttpError(res, "ERROR UPDATING FILE");
-//   }
-// };
-
 // declarando controlador para crear archivo
 const createFile = async (req, res) => {
     const { body, file } = req;
@@ -92,6 +65,4 @@ module.exports = {
   getFiles,
   deleteFile,
   createFile,
-  // updateFile,
-  // editFile,
 };

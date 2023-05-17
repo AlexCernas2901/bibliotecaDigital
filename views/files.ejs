@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Files</title>
+</head>
+<body>
+  <h3>Biblioteca digital-Files</h3>
+  <p>Bienvenido <%= user.name %></p>
+  <form action="/login/logout" method="POST">
+    <button type="submit" class="btn btn-primary">Cerrar sesión</button>
+  </form>
+  <form action="/auth/getFile" method="post">
+    <input type="text" id="buscar" name="buscar" placeholder="Buscar">
+    <button type="submit">Buscar</button>
+  </form>
+  <table>
+    <thead>
+      <tr>
+        <th>Filename</th>
+        <th>URL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% filesData.forEach((file) => { %>
+        <tr>
+          <td><%= file.filename %></td>
+          <td><a href="<%= file.url %>"  target="_blank"><%= file.url %></a></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</body>
+</html>

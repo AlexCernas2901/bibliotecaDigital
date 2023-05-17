@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit User</title>
+</head>
+<body>
+  <h1>Edit User</h1>
+  <form action="/users/update/<%= data._id %>" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="<%= data.name %>">
+
+    <label for="matricula">Matricula:</label>
+    <input type="text" id="matricula" name="matricula" value="<%= data.matricula %>">
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password">
+
+    <label for="role">Role:</label>
+    <input type="text" id="role" name="role" value="<%= data.role %>">
+
+    <button type="submit">Update</button>
+  </form>
+</body>
+</html>
