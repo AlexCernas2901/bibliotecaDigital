@@ -17,6 +17,20 @@ const getFiles = async (req, res) => {
     handdleHttpError(res, "ERROR GETTING FILES");
   }
 };
+
+// declarando controlador para obtener archivo por filename
+const getFileByName = async (req, res) => {
+  try {
+    const { filename } = req.body;
+    const user = req.session.data.user;
+    const filesData = await filesModel.find({ filename });
+    console.log(user, filesData);
+    res.render("files", { filesData, user });
+  } catch (e) {
+    handdleHttpError(res, "ERROR GETTING SEARCHED FILES");
+  }
+};
+
 // declarando controlador para obtener archivo por ID
 const getFile = async (req, res) => {
   try {
@@ -65,4 +79,5 @@ module.exports = {
   getFiles,
   deleteFile,
   createFile,
+  getFileByName 
 };
