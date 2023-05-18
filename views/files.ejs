@@ -13,6 +13,9 @@
     <input type="text" id="filename" name="filename" placeholder="Buscar">
     <button type="submit">Buscar</button>
   </form>
+  <% if(!main) {%>
+  <a href="/files">Archivos</a>
+  <% } %>
   <table>
     <thead>
       <tr>

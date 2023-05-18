@@ -12,7 +12,7 @@ const getFiles = async (req, res) => {
     const user = req.session.data.user;
     const filesData = await filesModel.find({});
     console.log(user, filesData);
-    res.render("files", { filesData, user });
+    res.render("files", { filesData, user, main:true });
   } catch (e) {
     handdleHttpError(res, "ERROR GETTING FILES");
   }
@@ -25,7 +25,7 @@ const getFileByName = async (req, res) => {
     const user = req.session.data.user;
     const filesData = await filesModel.find({ filename });
     console.log(user, filesData);
-    res.render("files", { filesData, user });
+    res.render("files", { filesData, user, main:false });
   } catch (e) {
     handdleHttpError(res, "ERROR GETTING SEARCHED FILES");
   }
