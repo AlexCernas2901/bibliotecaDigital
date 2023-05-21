@@ -6,6 +6,11 @@ const { handdleHttpError } = require("../utils/handdleError");
 const PUBLIC_URL = process.env.PUBLIC_URL;
 const MEDIA_PATH = `${__dirname}/../storage`;
 
+// opciones para paginar
+const options = {
+  page: 1,
+  limit: 35
+}
 // declarando controlador para obtener archivos
 const getFiles = async (req, res) => {
   try {
@@ -67,7 +72,7 @@ const createFile = async (req, res) => {
     const { body, file } = req;
     console.log(file);
     const fileData = {
-      filename: file.filename,
+      filename: `${file.filename}`,
       url: `${PUBLIC_URL}/${file.filename}`
     }
     const data = await filesModel.create(fileData);

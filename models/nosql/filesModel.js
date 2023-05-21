@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2")
 // modelo de archivos
 const fileSchema = new mongoose.Schema(
     {
@@ -14,5 +15,7 @@ const fileSchema = new mongoose.Schema(
         versionKey: false
     }
 );
+
+fileSchema.plugin(mongoosePaginate)
 
 module.exports = mongoose.model("files", fileSchema)

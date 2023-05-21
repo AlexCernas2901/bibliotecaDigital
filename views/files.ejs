@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Files</title>
-</head>
-<body>
-  <h3>Biblioteca digital-Files</h3>
+<%- include("partials/header.ejs")%>
+  <h3>Biblioteca digital</h3>
   <p>Bienvenido <%= user.name %></p>
   <form action="/login/logout" method="POST">
     <button type="submit" class="btn btn-primary">Cerrar sesión</button>
@@ -14,7 +9,11 @@
     <button type="submit">Buscar</button>
   </form>
   <% if(!main) {%>
-  <a href="/files">Archivos</a>
+  <a href="/files">Catalogo</a>
+  <% } %>
+  <% if(user.role=="admin") { %>
+    <a href="/admin/users">Usuarios</a>
+    <a href="/admin/files">Archivos</a>
   <% } %>
   <table>
     <thead>
@@ -32,5 +31,4 @@
       <% }); %>
     </tbody>
   </table>
-</body>
-</html>
+  <%- include("partials/footer.ejs")%>
