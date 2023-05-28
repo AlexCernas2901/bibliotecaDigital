@@ -22,6 +22,16 @@ const getFileWithIdValidator = [
     }
 ];
 
+// validando id del archivo
+const filenameValidator = [
+    check("filename")
+    .exists()
+    .notEmpty(),
+    (req, res, next) => {
+        return validateResults(req, res, next);
+    }
+];
+
 // validando para busqueda
 const getFileValidator = [
     check("q")
@@ -30,4 +40,4 @@ const getFileValidator = [
     .withMessage('El parámetro de búsqueda no puede estar vacío'),
 ];
 
-module.exports = { createFileValidator, getFileValidator, getFileWithIdValidator };
+module.exports = { createFileValidator, getFileValidator, getFileWithIdValidator, filenameValidator };

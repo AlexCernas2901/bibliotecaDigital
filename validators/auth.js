@@ -9,7 +9,7 @@ const registerValidator = [
     check("password")
     .exists()
     .notEmpty()
-    .isLength({ min:12, max:18 }),
+    .isLength({ min:10, max:18 }),
     check("matricula")
     .exists()
     .notEmpty()
@@ -27,7 +27,7 @@ const loginValidator = [
     check("password")
     .exists()
     .notEmpty()
-    .isLength({ min:12, max:18 }),
+    .isLength({ min:10, max:18 }),
     (req, res, next) => {
         return validateResults(req, res, next);
     }

@@ -1,0 +1,9 @@
+<%- include("partials/header.ejs")%>
+<% if(!main) {%>
+    <a href="/files">Catalogo</a>
+    <% } %>
+    <% if(user.role=="admin") {%>
+      <a href="/admin/users">Usuarios</a>
+      <a href="/admin/files">Archivos</a>
+    <% } %>
+    <%- include("partials/footer.ejs")%>
