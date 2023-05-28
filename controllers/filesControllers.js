@@ -58,6 +58,7 @@ const deleteFile = async (req, res) => {
     const filePath = `${MEDIA_PATH}/${filename}`;
     fs.unlinkSync(filePath);
     res.redirect("/admin/files");
+
   } catch (e) {
     handdleHttpError(res, "ERROR DELETING FILES");
   }
@@ -74,7 +75,6 @@ const createFile = async (req, res) => {
   const data = await filesModel.create(fileData);
   res.redirect("/admin/files");
 };
-
 
 module.exports = {
   getFile,
