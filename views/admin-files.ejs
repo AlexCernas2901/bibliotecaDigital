@@ -19,8 +19,12 @@
         <% filesData.forEach((file) => { %>
           <tr>
             <td><%= file.filename %></td>
-            <td><a href="<%= file.url %>"  target="_blank"><%= file.url %></a></td>
-            <td><a href="/admin/delete/<%= file.id %>">Eliminar</a></td>
+            <td><a href="<%= file.url %>"  target="_blank"><%= file.filename %></a></td>
+            <td>
+              <form action="/files/delete/<%= file.id %>" method="POST">
+                <button type="submit">Eliminar</button>
+              </form>
+            </td>
           </tr>
         <% }); %>
       </tbody>

@@ -12,7 +12,7 @@ router.post("/search", authMiddleware, checkRol(["user", "admin"]), filenameVali
 
 router.get("/:id", authMiddleware, checkRol(["user", "admin"]), getFileWithIdValidator, getFile); // ruta para seleccionar un archivo
 
-router.post("/create", uploadMiddleware.single("myfile"), createFile); // ruta para crear un archivo
+router.post("/create", uploadMiddleware.single("filename"), createFile); // ruta para crear un archivo
 
 router.post("/delete/:id", authMiddleware, checkRol(["admin"]), getFileWithIdValidator, deleteFile); // ruta para eliminar un archivo
 

@@ -57,11 +57,7 @@ const deleteFile = async (req, res) => {
     const { filename } = data;
     const filePath = `${MEDIA_PATH}/${filename}`;
     fs.unlinkSync(filePath);
-    const deletedFile = {
-      filePath,
-      deleted: "SUCCESSFULLY DELETED"
-    }
-    res.send({ deletedFile });
+    res.redirect("/admin/files");
   } catch (e) {
     handdleHttpError(res, "ERROR DELETING FILES");
   }
@@ -69,15 +65,16 @@ const deleteFile = async (req, res) => {
 
 // declarando controlador para crear archivo
 const createFile = async (req, res) => {
-    const { body, file } = req;
-    console.log(file);
-    const fileData = {
-      filename: `${file.filename}`,
-      url: `${PUBLIC_URL}/${file.filename}`
-    }
-    const data = await filesModel.create(fileData);
-    res.send({ data });
+  const { body, file } = req;
+  console.log(file);
+  const fileData = {
+    filename: `${file.filename}`,
+    url: `${PUBLIC_URL}/${file.filename}`
+  }
+  const data = await filesModel.create(fileData);
+  res.redirect("/admin/files");
 };
+
 
 module.exports = {
   getFile,
