@@ -1,5 +1,5 @@
 const { check } = require("express-validator");
-const { validateResults } = require("../utils/handdleValidator");
+const { validateResults } = require("../utils/handleValidator");
 
 const registerValidator = [
     check("name")

@@ -1,13 +1,15 @@
 const login = (req, res) => {
-  res.render("login");
+  const alert = req.session.alert;
+  res.render('login', { alert });
 };
-
 
 const logout = (req, res) => {
-      req.session.destroy((err) => {
-        res.redirect("/login");
-        console.log("SESSION CLOSED");
-      });
+  req.session.destroy((err) => {
+    res.redirect("/login");
+  });
 };
 
-module.exports = { login, logout }
+module.exports = { 
+  login, 
+  logout 
+};

@@ -11,6 +11,7 @@ app.use(userSession); // session del usuario
 
 app.use(express.static("storage")); // uso de archivos estaticos
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/", require("./routes")); // haciendo uso de las rutas

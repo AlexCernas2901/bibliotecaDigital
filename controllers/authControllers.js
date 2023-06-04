@@ -1,8 +1,8 @@
 const { matchedData } = require("express-validator");
-const { encrypt, compare} = require("../utils/handdlePassword");
-const { signToken } = require("../utils/handdleJWT");
+const { encrypt, compare} = require("../utils/handlePassword");
+const { signToken } = require("../utils/handleJWT");
 const { usersModel } = require("../models");
-const { handdleHttpError } = require("../utils/handdleError");
+const { handleHttpError } = require("../utils/handleError");
 
 // declarando controlador para registrar un usuario
 const registerController = async (req, res) => {
@@ -19,7 +19,7 @@ const registerController = async (req, res) => {
     }
     res.send({ data });
     } catch (e) {
-        handdleHttpError(res, "ERROR REGISTER USER");
+        handleHttpError(res, "ERROR REGISTER USER");
     }
 }
 
@@ -30,20 +30,16 @@ const loginController = async (req, res) => {
       const user = await usersModel
         .findOne({ matricula: requestData.matricula })
         .select("name matricula password role");
-  
       if (!user) {
-        handdleHttpError(res, "USER NO EXISTS", 404);
+        handleHttpError(res, "USER NO EXISTS", 404);
         return;
       }
-  
       const hashPassword = user.get("password");
       const check = await compare(requestData.password, hashPassword);
-  
       if (!check) {
-        handdleHttpError(res, "INVALID PASSWORD", 401);
+        handleHttpError(res, "INVALID PASSWORD", 401);
         return;
       }
-  
       user.set("password", undefined, { strict: false });
       const data = {
         token: await signToken(user),
@@ -54,11 +50,11 @@ const loginController = async (req, res) => {
       res.redirect("/files");
     } catch (e) {
       console.error("ERROR REGISTER USER:", e);
-      handdleHttpError(res, "ERROR REGISTER USER");
+      handleHttpError(res, "ERROR REGISTER USER");
     }
   };
 
 module.exports = { 
-    loginController, 
-    registerController 
+  loginController, 
+  registerController 
 };

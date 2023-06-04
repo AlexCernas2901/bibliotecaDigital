@@ -1,32 +1,33 @@
-<%- include("partials/header.ejs")%>
-  <% if(!main) {%>
-    <a href="/files">Catalogo</a>
-    <% } %>
-    <% if(user.role=="admin") {%>
-      <a href="/admin/users">Usuarios</a>
-      <a href="/admin/files">Archivos</a>
-    <% } %>
-    <a href="/admin/add-file">Agregar archivo</a>
-    <table>
-      <thead>
-        <tr>
-          <th>Filename</th>
-          <th>URL</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% filesData.forEach((file) => { %>
-          <tr>
-            <td><%= file.filename %></td>
-            <td><a href="<%= file.url %>"  target="_blank"><%= file.filename %></a></td>
-            <td>
-              <form action="/files/delete/<%= file.id %>" method="POST">
-                <button type="submit">Eliminar</button>
-              </form>
-            </td>
-          </tr>
-        <% }); %>
-      </tbody>
-    </table>
+<%- include("partials/header.ejs")%> <% if(!main) {%>
+<a href="/files">Catalogo</a>
+<% } %> <% if(user.role=="admin") {%>
+<a href="/admin/users">Usuarios</a>
+<a href="/admin/files">Archivos</a>
+<% } %>
+<a href="/admin/add-file">Agregar archivo</a>
+<table>
+  <thead>
+    <tr>
+      <th>Filename</th>
+      <th>URL</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% filesData.forEach((file) => { %>
+    <tr>
+      <td><%= file.filename %></td>
+      <td>
+        <a href="<%= file.url %>" target="_blank"><%= file.filename %></a>
+      </td>
+      <td><a href="<%= file.url %>" target="_blank"><%= file.url %></a></td>
+      <td>
+        <form action="/files/delete/<%= file.id %>" method="POST">
+          <button type="submit">Eliminar</button>
+        </form>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
 <%- include("partials/footer.ejs")%>

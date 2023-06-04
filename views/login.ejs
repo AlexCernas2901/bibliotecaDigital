@@ -1,4 +1,9 @@
 <%- include("partials/header.ejs")%>
+<% if (alert) { %>
+  <div class="alert alert-danger">
+    <%= alert %>
+  </div>
+<% } %>
   <h1>Login</h1>
   <form action="/auth/login" method="post">
     <label for="matricula">Matricula:</label>

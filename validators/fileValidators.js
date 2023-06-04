@@ -1,8 +1,7 @@
 const { check } = require("express-validator");
-const { validateResults } = require("../utils/handdleValidator");
+const { validateResults } = require("../utils/handleValidator");
 
-// validando titulo del archivo
-const createFileValidator = [
+const createFileValidator = [ // validando titulo del archivo
     check("titulo")
     .exists()
     .notEmpty(),
@@ -11,8 +10,7 @@ const createFileValidator = [
     }
 ];
 
-// validando id del archivo
-const getFileWithIdValidator = [
+const getFileWithIdValidator = [ // validando id del archivo
     check("id")
     .exists()
     .notEmpty()
@@ -22,8 +20,7 @@ const getFileWithIdValidator = [
     }
 ];
 
-// validando id del archivo
-const filenameValidator = [
+const filenameValidator = [ // validando id del archivo
     check("filename")
     .exists()
     .notEmpty(),
@@ -32,8 +29,7 @@ const filenameValidator = [
     }
 ];
 
-// validando para busqueda
-const getFileValidator = [
+const getFileValidator = [ // validando para busqueda
     check("q")
     .exists()
     .notEmpty()
