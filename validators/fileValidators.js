@@ -2,7 +2,7 @@ const { check } = require("express-validator");
 const { validateResults } = require("../utils/handleValidator");
 
 const createFileValidator = [ // validando titulo del archivo
-    check("titulo")
+    check("tittle")
     .exists()
     .notEmpty(),
     (req, res, next) => {
@@ -20,20 +20,17 @@ const getFileWithIdValidator = [ // validando id del archivo
     }
 ];
 
-const filenameValidator = [ // validando id del archivo
-    check("filename")
-    .exists()
-    .notEmpty(),
+const bodyFileValidator = [
+    check('filename')
+      .custom((value, { req }) => {
+        if (!value.endsWith('.pdf')) {
+          throw new Error('El archivo debe ser de tipo PDF');
+        }
+        return true;
+      }),
     (req, res, next) => {
-        return validateResults(req, res, next);
+      return validateResults(req, res, next);
     }
-];
+  ];
 
-const getFileValidator = [ // validando para busqueda
-    check("q")
-    .exists()
-    .notEmpty()
-    .withMessage('El parámetro de búsqueda no puede estar vacío'),
-];
-
-module.exports = { createFileValidator, getFileValidator, getFileWithIdValidator, filenameValidator };
+module.exports = {  bodyFileValidator, createFileValidator, getFileWithIdValidator };

@@ -16,6 +16,8 @@
   <tbody>
     <% filesData.forEach((file) => { %>
     <tr>
+      <td><%= file.tittle %></td>
+
       <td><%= file.filename %></td>
       <td>
         <a href="<%= file.url %>" target="_blank"><%= file.filename %></a>

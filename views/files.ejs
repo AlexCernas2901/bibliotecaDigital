@@ -5,7 +5,7 @@
   <button type="submit" class="btn btn-primary">Cerrar sesión</button>
 </form>
 <form action="/files/search" method="post">
-  <input type="text" id="filename" name="filename" placeholder="Buscar" />
+  <input type="text" id="tittle" name="tittle" placeholder="Buscar" />
   <button type="submit">Buscar</button>
 </form>
 <% if(!main) {%>
@@ -24,7 +24,7 @@
     <% filesData.forEach((file) => { %>
     <tr>
       <td>
-        <a href="<%= file.url %>" target="_blank"><%= file.filename %></a>
+        <a href="<%= file.url %>" target="_blank"><%= file.tittle %>.pdf</a>
       </td>
     </tr>
     <% }); %>
