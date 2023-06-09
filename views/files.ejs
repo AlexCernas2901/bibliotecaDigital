@@ -1,11 +1,19 @@
 <%- include("partials/header.ejs")%>
+<% if (alerts && alerts.length > 0) { %>
+  <div class="alert alert-danger">
+    <% alerts.forEach(function(alert) { %>
+      <p><%= alert %></p>
+    <% }); %>
+  </div>
+<% } %>
 <h3>Biblioteca digital</h3>
 <p>Bienvenido <%= user.name %></p>
+<a href="/users/profile">Perfil</a>
 <form action="/login/logout" method="POST">
   <button type="submit" class="btn btn-primary">Cerrar sesión</button>
 </form>
-<form action="/files/search" method="post">
-  <input type="text" id="tittle" name="tittle" placeholder="Buscar" />
+<form action="/files/search" method="POST">
+  <input type="text" id="tittle" name="tittle" placeholder="Buscar" required/>
   <button type="submit">Buscar</button>
 </form>
 <% if(!main) {%>

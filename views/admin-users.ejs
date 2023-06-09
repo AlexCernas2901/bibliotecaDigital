@@ -1,10 +1,17 @@
 <%- include("partials/header.ejs")%>
+<% if (alerts && alerts.length > 0) { %>
+  <div class="alert alert-danger">
+    <% alerts.forEach(function(alert) { %>
+      <p><%= alert %></p>
+    <% }); %>
+  </div>
+<% } %>
   <% if(!main) {%>
     <a href="/files">Catalogo</a>
     <% } %>
     <% if(user.role=="admin") {%>
       <a href="/admin/users">Usuarios</a>
-      <a href="/adminusers">Archivos</a>
+      <a href="/admin/files">Archivos</a>
   <% } %>
   <a href="/admin/add-user">Agregar usuario</a>
   <table>

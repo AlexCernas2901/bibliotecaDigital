@@ -8,8 +8,8 @@ const dbConnect = () => {// conexion a la base de datos
         useUnifiedTopology: true,
     });
     const db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', function() {
+    db.on("error", console.error.bind(console, "connection error:"));
+    db.once("open", function() {
         console.log("CONNECTION SUCCESSFULLY");
     });
 };

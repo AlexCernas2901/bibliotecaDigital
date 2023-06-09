@@ -1,9 +1,10 @@
 const login = (req, res) => {
-  const alert = req.session.alert;
-  res.render('login', { alert });
+  const alerts = req.session.alerts || [];
+  delete req.session.alerts; // eliminar las alertas después de mostrarlas
+  res.render("login", { alerts });
 };
 
-const logout = (req, res) => {
+const logout = (req, res) => { // cerrar session
   req.session.destroy((err) => {
     res.redirect("/login");
   });

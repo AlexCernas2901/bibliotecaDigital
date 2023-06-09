@@ -8,9 +8,9 @@
 <table>
   <thead>
     <tr>
+      <th>Tittle</th>
       <th>Filename</th>
       <th>URL</th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -22,7 +22,6 @@
       <td>
         <a href="<%= file.url %>" target="_blank"><%= file.filename %></a>
       </td>
-      <td><a href="<%= file.url %>" target="_blank"><%= file.url %></a></td>
       <td>
         <form action="/files/delete/<%= file.id %>" method="POST">
           <button type="submit">Eliminar</button>
