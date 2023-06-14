@@ -5,6 +5,10 @@
 <a href="/admin/files">Archivos</a>
 <% } %>
 <a href="/admin/add-file">Agregar archivo</a>
+<form action="/admin/searchFile" method="POST">
+  <input type="text" id="tittle" name="tittle" placeholder="Buscar" required/>
+  <button type="submit">Buscar</button>
+</form>
 <table>
   <thead>
     <tr>

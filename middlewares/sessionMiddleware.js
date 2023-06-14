@@ -4,7 +4,7 @@ const { verifyToken } = require("../utils/handleJWT");
 const { usersModel } = require("../models");
 
 // sesion de usuarios
-const authMiddleware = async (req, res, next) => {
+const  authMiddleware = async (req, res, next) => {
     try {
         if (!req.session.data || !req.session.data.token) {
             req.session.alert = "El token no existe";

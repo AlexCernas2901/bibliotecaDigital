@@ -1,5 +1,5 @@
-const { check } = require("express-validator");
-const { validateResults } = require("../utils/handleValidator");
+const { check,validationResult } = require("express-validator");
+// const { validateResults } = require("../utils/handleValidator");
 
 const getUserWithIdValidator = [
   // validando id del usuario
@@ -39,8 +39,20 @@ const getUserPasswordValidator = [
   },
 ];
 
+const matriculaValidator = [
+  check("matricula").exists().notEmpty().isLength({ min: 8, max: 8 }),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.redirect("/admin/users");
+    }
+    next();
+  },
+]
+
 module.exports = {
   getUserWithIdValidator,
   getBodyUserValidator,
   getUserPasswordValidator,
+  matriculaValidator
 };

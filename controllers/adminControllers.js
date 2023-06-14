@@ -68,10 +68,40 @@ const editUser = async (req, res) => { // declarando controlador para renderizar
   }
 };
 
+const getFile = async (req, res) => {
+  try {
+    const { tittle } = req.body;
+    const user = req.session.data.user;
+    const filesData = await filesModel.find({ tittle });
+    const alerts = req.session.alerts || [];
+    delete req.session.alerts;
+    res.render("admin-files", { alerts, filesData, user, main: false });
+  } catch (e) {
+    req.session.alerts = ["Error al intentar buscar el archivo"];
+    return res.redirect("/files");
+  }
+}
+
+const getUser = async (req, res) => {
+  try {
+    const { matricula } = req.body;
+    const user = req.session.data.user;
+    const usersData = await usersModel.find({ matricula });
+    const alerts = req.session.alerts || [];
+    delete req.session.alerts;
+    res.render("admin-users", { alerts, usersData, user, main: false });
+  } catch (e) {
+    req.session.alerts = ["Error al intentar buscar el archivo"];
+    return res.redirect("/files");
+  }
+}
+
 module.exports = {
   editFiles,
   editUsers,
   addFile,
   addUser,
   editUser,
+  getFile,
+  getUser
 };

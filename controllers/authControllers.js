@@ -54,7 +54,6 @@ const loginController = async (req, res) => { // declarando controlador para log
       req.session.alerts.push("Matricula o contraseña incorrecta");
       return res.redirect("/login");
     }
-
     delete user.password; // elimina la propiedad 'password' del objeto user
 
     const data = {
