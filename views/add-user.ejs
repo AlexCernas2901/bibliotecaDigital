@@ -1,11 +1,4 @@
 <%- include("partials/header.ejs")%>
-<% if (alerts && alerts.length > 0) { %>
-  <div class="alert alert-danger">
-    <% alerts.forEach(function(alert) { %>
-      <p><%= alert %></p>
-    <% }); %>
-  </div>
-<% } %>
 <a href="/admin/users">Volver</a>
 <form method="POST" action="/users/create">
     <label for="name">Name:</label>

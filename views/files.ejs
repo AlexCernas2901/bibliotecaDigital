@@ -1,11 +1,5 @@
 <%- include("partials/header.ejs")%>
-<% if (alerts && alerts.length > 0) { %>
-  <div class="alert alert-danger">
-    <% alerts.forEach(function(alert) { %>
-      <p><%= alert %></p>
-    <% }); %>
-  </div>
-<% } %>
+<%- include("partials/alerts.ejs")%> 
 <h3>Biblioteca digital</h3>
 <p>Bienvenido <%= user.name %></p>
 <a href="/users/profile">Perfil</a>

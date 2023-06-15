@@ -4,7 +4,7 @@ const { filesModel } = require("../models");
 const PUBLIC_URL = process.env.PUBLIC_URL;
 const MEDIA_PATH = `${__dirname}/../storage`;
 
-const getFiles = async (req, res) => {// declarando controlador para obtener los archivos
+const getFiles = async (req, res) => { // declarando controlador para obtener los archivos
   try {
     const user = req.session.data.user;
     const filesData = await filesModel.find({});
@@ -32,7 +32,7 @@ const getFileByName = async (req, res) => { // declarando controlador para selec
   }
 };
 
-const getFile = async (req, res) => {// declarando controlador para seleccionar archivo por id
+const getFile = async (req, res) => { // declarando controlador para seleccionar archivo por id
   try {
     const { id } = matchedData(req);
     const data = await filesModel.findById(id);
@@ -44,7 +44,7 @@ const getFile = async (req, res) => {// declarando controlador para seleccionar 
   }
 };
 
-const deleteFile = async (req, res) => {// declarando controlador para eliminar un archivo
+const deleteFile = async (req, res) => { // declarando controlador para eliminar un archivo
   try {
     const { id } = matchedData(req);
     const data = await filesModel.findById(id);

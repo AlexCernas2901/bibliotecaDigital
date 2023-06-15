@@ -1,10 +1,7 @@
-// declarando funcion para validar permisos de usuario
-// const { handdleHttpError } = require("../utils/handleError");
-
-const checkRol = (roles) => (req, res, next) => { // Declarando función para validar permisos de usuario
+const checkRol = (roles) => (req, res, next) => { // declarando función para validar permisos de usuario
     try {
-        const { user } = req;
-        const rolesByUser = user.role;
+        req.session.alerts = []; // limpiar los mensajes de alerta antes de enviar la respuesta
+        const rolesByUser = req.session.data.user.role;
         const checkValueRole = roles.some((rolSingle) => {
             return rolesByUser.includes(rolSingle);
         });

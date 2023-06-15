@@ -1,11 +1,5 @@
 <%- include("partials/header.ejs")%>
-<% if (alerts && alerts.length > 0) { %>
-  <div class="alert alert-danger">
-    <% alerts.forEach(function(alert) { %>
-      <p><%= alert %></p>
-    <% }); %>
-  </div>
-<% } %>
+<%- include("partials/alerts.ejs")%> 
 <h1>Login</h1>
 <form action="/auth/login" method="post">
   <label for="matricula">Matricula:</label>

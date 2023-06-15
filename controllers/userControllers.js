@@ -6,7 +6,7 @@ const sanitizeHtml = require("sanitize-html");
 
 const getUsers = async (req, res) => {
   try {
-    const user = req.user;
+    const user = req.session.data.user;
     const data = await usersModel.find({});
     console.log(data);
     res.send({ data, user });
@@ -113,6 +113,16 @@ const editProfile = async (req, res) => { // funcion para renderizar la vista de
   }
 };
 
+const changePass = async (req, res) => {
+  try{
+    // logica para cambio de contraseña
+    res.send("hola");
+  } catch (e) {
+    req.session.alerts = ["Error al intentar cambiar la contraseña"];
+    return res.redirect("/files");
+  }
+}
+
 module.exports = {
   getUser,
   getUsers,
@@ -120,5 +130,6 @@ module.exports = {
   updateUser,
   editUser,
   createUser,
-  editProfile
+  editProfile,
+  changePass
 };

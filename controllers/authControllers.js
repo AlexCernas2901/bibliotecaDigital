@@ -23,7 +23,7 @@ const registerController = async (req, res) => { // declarando controlador para 
       user: userData,
     };
 
-    req.session.alerts = []; // Limpiar los mensajes de alerta antes de enviar la respuesta
+    req.session.alerts = []; // limpiar los mensajes de alerta antes de enviar la respuesta
     res.send({ data });
   } catch (e) {
     req.session.alerts = ["Error al intentar registrar un usuario"]; // Establecer un nuevo array de alertas con el mensaje de error
@@ -31,42 +31,43 @@ const registerController = async (req, res) => { // declarando controlador para 
   }
 };
 
-const loginController = async (req, res) => { // declarando controlador para login de usuarios
+const loginController = async (req, res) => {
   try {
-    req.session.alerts = []; // Limpiar los mensajes de alerta antes de cada inicio de sesión
-
+    req.session.alerts = []; // limpiar los mensajes de alerta antes de enviar la respuesta
     const requestData = matchedData(req);
-    let { matricula, password } = requestData;
-    matricula = sanitizeHtml(matricula);
-    password = sanitizeHtml(password);
     const user = await usersModel
       .findOne({ matricula: requestData.matricula })
       .select("name matricula password role");
+
     if (!user) {
       req.session.alerts.push("Matricula o contraseña incorrecta");
       return res.redirect("/login");
     }
 
-    const hashPassword = user.password;
+    const hashPassword = user.get("password");
     const check = await compare(requestData.password, hashPassword);
 
     if (!check) {
       req.session.alerts.push("Matricula o contraseña incorrecta");
-      return res.redirect("/login");
+      return res.redirect("/login"); 
     }
-    delete user.password; // elimina la propiedad 'password' del objeto user
+
+    user.set("password", undefined, { strict: false });
+    user.set("matricula", undefined, { strict: false });
 
     const data = {
       token: await signToken(user),
-      user,
-    };
-    
-    req.session.data = data;
-    res.redirect("/files");
+      userID: user._id,
+    }
+
+    req.session.data = data
+    console.log('data: ', data)
+    res.json({ data });
   } catch (e) {
+    console.error("ERROR REGISTER USER:", e);
     req.session.alerts.push("Error al iniciar sesión");
     return res.redirect("/login");
-  }
+    }
 };
 
 module.exports = {
