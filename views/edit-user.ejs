@@ -1,0 +1,18 @@
+<%- include("partials/header.ejs")%>
+<a href="/admin/users">Volver</a>
+<form action="/users/update/<%= userData.id %>" method="POST">
+  <input type="hidden" name="id" value="<%= userData.id %>">
+  
+  <label for="name">Nombre:</label>
+  <input type="text" name="name" value="<%= userData.name %>">
+  
+  <label for="matricula">Matricula:</label>
+  <input type="number" name="matricula" value="<%= userData.matricula %>">
+  
+  <select id="role" name="role">
+    <option value="user" <% if (userData.role == 'user') { %> selected <% } %>>User</option>
+    <option value="admin" <% if (userData.role == 'admin') { %> selected <% } %>>Admin</option>
+  </select>   
+  <button type="submit">Guardar cambios</button>
+</form>
+<%- include("partials/footer.ejs")%>

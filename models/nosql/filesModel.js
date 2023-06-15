@@ -1,20 +1,23 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2")
-// modelo de archivos
-const fileSchema = new mongoose.Schema(
+
+const fileSchema = new mongoose.Schema( // modelo de archivos
     {
-        filename: {
-            type: String,
-        },
-        url: {
-            type: String,
-        }
+      tittle: {
+        type: String,
+      },
+      filename: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
     },
     {
-        timestamps: true,
-        versionKey: false
+      timestamps: true,
+      versionKey: false,
     }
-);
+  );
 
 fileSchema.plugin(mongoosePaginate)
 

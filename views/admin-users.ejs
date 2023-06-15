@@ -1,10 +1,45 @@
 <%- include("partials/header.ejs")%>
-<% if(!main) {%>
+<%- include("partials/alerts.ejs")%> 
+  <% if(!main) {%>
     <a href="/files">Catalogo</a>
     <% } %>
     <% if(user.role=="admin") {%>
       <a href="/admin/users">Usuarios</a>
       <a href="/admin/files">Archivos</a>
-    <% } %>
+  <% } %>
+  <a href="/admin/search">Agregar usuario</a>
+  <form action="/admin/searchUser" method="POST">
+    <input type="text" id="matricula" name="matricula" placeholder="Buscar" required/>
+    <button type="submit">Buscar</button>
+  </form>
+  <table>
+    <thead>
+      <tr>
+        <thusername</th>
+        <th>Nombre</th>
+        <th>Matricula</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% usersData.forEach((user) => { %>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= user.matricula %></td>
+          <td>
+            <form action="/users/delete/<%=user.id %>" method="POST">
+              <button type="submit">Eliminar</button>
+            </form>
+          </td>
+          <td>
+            <form action="/admin/edit-user/<%=user.id %>" method="POST">
+              <button type="submit">Editar</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
 <%- include("partials/footer.ejs")%>
 

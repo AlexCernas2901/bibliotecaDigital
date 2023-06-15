@@ -1,0 +1,28 @@
+<%- include("partials/header.ejs")%>
+<% if (alerts && alerts.length > 0) { %>
+  <div class="alert alert-danger">
+    <% alerts.forEach(function(alert) { %>
+      <p><%= alert %></p>
+    <% }); %>
+  </div>
+<% } %>
+<a href="/admin/users">Volver</a>
+<form method="POST" action="/users/create">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    
+    <label for="matricula">Matricula:</label>
+    <input type="number" id="matricula" name="matricula" required>
+    
+    <label for="role">Role:</label>
+    <select id="role" name="role">
+      <option value="user">User</option>
+      <option value="admin">Admin</option>
+    </select>
+    
+    <button type="submit">Create User</button>
+  </form>
+<%- include("partials/footer.ejs")%>

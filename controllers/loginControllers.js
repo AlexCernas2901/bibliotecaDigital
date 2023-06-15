@@ -1,13 +1,16 @@
 const login = (req, res) => {
-  res.render("login");
+  const alerts = req.session.alerts || [];
+  delete req.session.alerts; // eliminar las alertas después de mostrarlas
+  res.render("login", { alerts });
 };
 
-
-const logout = (req, res) => {
-      req.session.destroy((err) => {
-        res.redirect("/login");
-        console.log("SESSION CLOSED");
-      });
+const logout = (req, res) => { // cerrar session
+  req.session.destroy((err) => {
+    res.redirect("/login");
+  });
 };
 
-module.exports = { login, logout }
+module.exports = { 
+  login, 
+  logout 
+};

@@ -1,10 +1,17 @@
 <%- include("partials/header.ejs")%>
-  <h1>Login</h1>
-  <form action="/auth/login" method="post">
-    <label for="matricula">Matricula:</label>
-    <input type="text" id="matricula" name="matricula" placeholder="matricula">
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" placeholder="password">
-    <button type="submit">Login</button>
-  </form>
+<% if (alerts && alerts.length > 0) { %>
+  <div class="alert alert-danger">
+    <% alerts.forEach(function(alert) { %>
+      <p><%= alert %></p>
+    <% }); %>
+  </div>
+<% } %>
+<h1>Login</h1>
+<form action="/auth/login" method="post">
+  <label for="matricula">Matricula:</label>
+  <input type="text" id="matricula" name="matricula" placeholder="matricula" required>
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" placeholder="password" required>
+  <button type="submit">Login</button>
+</form>
 <%- include("partials/footer.ejs")%>

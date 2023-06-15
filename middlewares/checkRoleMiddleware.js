@@ -1,8 +1,7 @@
 // declarando funcion para validar permisos de usuario
-const { handdleHttpError } = require("../utils/handdleError");
+// const { handdleHttpError } = require("../utils/handleError");
 
-// Declarando función para validar permisos de usuario
-const checkRol = (roles) => (req, res, next) => {
+const checkRol = (roles) => (req, res, next) => { // Declarando función para validar permisos de usuario
     try {
         const { user } = req;
         const rolesByUser = user.role;
@@ -10,12 +9,13 @@ const checkRol = (roles) => (req, res, next) => {
             return rolesByUser.includes(rolSingle);
         });
         if (!checkValueRole) {
-            handdleHttpError(res, "NO VALID USER PERMISSIONS", 403);
-            return;
+            req.session.alert = "Permisos invalidos";
+            return res.redirect("/login");
         }
         next();
     } catch (e) {
-        handdleHttpError(res, "NEED PERMISSIONS", 403);
+        req.session.alert = "No tienes permisos";
+        return res.redirect("/login");
     }
 };
 
