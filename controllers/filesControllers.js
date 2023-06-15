@@ -44,7 +44,7 @@ const getFile = async (req, res) => {// declarando controlador para seleccionar 
   }
 };
 
-const deleteFile = async (req, res) => {// declarando controlador para eliminar un archivo
+const deleteFile = async (req, res) => { // declarando controlador para eliminar un archivo
   try {
     const { id } = matchedData(req);
     const data = await filesModel.findById(id);
