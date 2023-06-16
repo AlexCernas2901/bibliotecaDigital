@@ -3,19 +3,21 @@ const { matchedData } = require("express-validator");
 const { encrypt } = require("../utils/handlePassword");
 const { signToken } = require("../utils/handleJWT");
 const sanitizeHtml = require("sanitize-html");
+const { handleHttpError } = require("../utils/handleError");
 
+// controlador para obtener usuarios
 const getUsers = async (req, res) => {
   try {
     const user = req.session.data.user;
     const data = await usersModel.find({});
     console.log(data);
-    res.send({ data, user });
+    res.json({ data, user });
   } catch (e) {
-    req.session.alerts = ["Error al obtener usuarios"];
-    return res.redirect("/login");
+    handleHttpError(res, "Error al obtener usuarios");
   }
 };
 
+// controlador para crear un usuario
 const createUser = async (req, res) => {
   try {
     const userData = matchedData(req);
@@ -24,8 +26,7 @@ const createUser = async (req, res) => {
     // verificar si ya existe un usuario con la misma matrícula
     const existingUser = await usersModel.findOne({ matricula: userData.matricula });
     if (existingUser) {
-      req.session.alerts = ["Ya existe un usuario con la misma matrícula"];
-      return res.redirect("/admin/add-user");
+      return handleHttpError(res, "Error matricula en uso");
     }
 
     const savedUser = await usersModel.create({
@@ -41,54 +42,51 @@ const createUser = async (req, res) => {
     };
 
     console.log(responseData);
-
-    req.session.alerts = []; // limpiar los mensajes de alerta antes de enviar la respuesta
     res.redirect("/admin/users");
   } catch (e) {
-    req.session.alerts = ["Error al crear usuario"]; // establecer un nuevo array de alertas con el mensaje de error
-    return res.redirect("/admin/users");
+    handleHttpError(res, "Error al crear usuario");
   }
 };
 
+// controlador para editar un usuario
 const editUser = async (req, res) => {
   try {
     const requestData = matchedData(req);
     const { id } = requestData;
     const data = await usersModel.findById({ _id: id });
     console.log(data);
-    res.send({ data });
+    res.json({ data });
   } catch (e) {
-    req.session.alerts = ["Error al intentar editar usuario"];
-    return res.redirect("/admin/users");
+    handleHttpError(res, "Error al editar usuario");
   }
 };
 
+// controlador para obtener un usuario
 const getUser = async (req, res) => {
   try {
     const requestData = matchedData(req);
     const { id } = requestData;
     const data = await usersModel.findById(id);
     console.log(data);
-    res.send({ data });
+    res.json({ data });
   } catch (e) {
-    req.session.alerts = ["Error al intentar obtener el usuario"];
-    return res.redirect("/admin/users");
+    handleHttpError(res, "Error al buscar usuario");
   }
 };
 
+// controlador para eliminar un usuario
 const deleteUser = async (req, res) => {
   try {
     const requestData = matchedData(req);
     const { id } = requestData;
     await usersModel.deleteOne({ _id: id });
-    req.session.alerts = ["Usuario eliminado correctamente"];
     res.redirect("/admin/users");
   } catch (e) {
-    req.session.alerts = ["Error al intentar eliminar el usuario"];
-    return res.redirect("/admin/users");
+    handleHttpError(res, "Error al eliminar usuario");
   }
 };
 
+// controlador para actualizar un usuario
 const updateUser = async (req, res) => {
   try {
     const requestData = matchedData(req);
@@ -98,30 +96,29 @@ const updateUser = async (req, res) => {
     console.log(data);
     res.redirect("/admin/users");
   } catch (e) {
-    req.session.alerts = ["Error al intentar actualizar el usuario"];
-    return res.redirect("/admin/users");
+    handleHttpError(res, "Error al actualizar usuario");
   }
 };
 
-const editProfile = async (req, res) => { // funcion para renderizar la vista de editar perfil
+// controlador para editar el perfil de usuario
+const editProfile = async (req, res) => {
   try {
     const user = req.session.data.user;
-    res.render("edit-profile", { user, main: false });
+    res.json({ user });
   } catch (e) {
-    req.session.alerts = ["Error al intentar obtener usuarios"];
-    return res.redirect("/files");
+    handleHttpError(res, "Error vista editProfile");
   }
 };
 
+// controlador para cambiar la contraseña
 const changePass = async (req, res) => {
-  try{
-    // logica para cambio de contraseña
-    res.send("hola");
+  try {
+    // logica para cambio de contraseña (en desarrollo)
+    res.send("Hola");
   } catch (e) {
-    req.session.alerts = ["Error al intentar cambiar la contraseña"];
-    return res.redirect("/files");
+    handleHttpError(res, "Error al actualizar contraseña");
   }
-}
+};
 
 module.exports = {
   getUser,

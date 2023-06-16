@@ -3,8 +3,10 @@ const { encrypt, compare } = require("../utils/handlePassword");
 const { signToken } = require("../utils/handleJWT");
 const { usersModel } = require("../models");
 const sanitizeHtml = require("sanitize-html");
+const { handleHttpError } = require("../utils/handleError");
 
-const registerController = async (req, res) => { // declarando controlador para registrar un usuario
+// controlador para regustrar un nuevo usuario
+const registerController = async (req, res) => {
   try {
     req = matchedData(req);
     let { name, matricula, password } = req;
@@ -23,33 +25,28 @@ const registerController = async (req, res) => { // declarando controlador para 
       user: userData,
     };
 
-    req.session.alerts = []; // limpiar los mensajes de alerta antes de enviar la respuesta
-    res.send({ data });
+    res.json({ data });
   } catch (e) {
-    req.session.alerts = ["Error al intentar registrar un usuario"]; // Establecer un nuevo array de alertas con el mensaje de error
-    return res.redirect("/files");
+    handleHttpError(res, "Error al registrar usuario", 500);
   }
 };
 
+// controlador para login de usuarios
 const loginController = async (req, res) => {
   try {
-    req.session.alerts = []; // limpiar los mensajes de alerta antes de enviar la respuesta
     const requestData = matchedData(req);
     const user = await usersModel
       .findOne({ matricula: requestData.matricula })
       .select("name matricula password role");
-
     if (!user) {
-      req.session.alerts.push("Matricula o contraseña incorrecta");
-      return res.redirect("/login");
+      handleHttpError(res, "Error datos incorrectos", 400);
     }
 
     const hashPassword = user.get("password");
     const check = await compare(requestData.password, hashPassword);
 
     if (!check) {
-      req.session.alerts.push("Matricula o contraseña incorrecta");
-      return res.redirect("/login"); 
+      handleHttpError(res, "Error datos incorrectos", 400);
     }
 
     user.set("password", undefined, { strict: false });
@@ -60,14 +57,12 @@ const loginController = async (req, res) => {
       userID: user._id,
     }
 
-    req.session.data = data
-    console.log('data: ', data)
+    req.session.data = data;
+    console.log('data: ', data);
     res.json({ data });
   } catch (e) {
-    console.error("ERROR REGISTER USER:", e);
-    req.session.alerts.push("Error al iniciar sesión");
-    return res.redirect("/login");
-    }
+    handleHttpError(res, "Error usuario no existe", 500);
+  }
 };
 
 module.exports = {

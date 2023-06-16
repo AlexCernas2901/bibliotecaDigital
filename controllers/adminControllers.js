@@ -2,97 +2,85 @@ const { filesModel } = require("../models");
 const { usersModel } = require("../models");
 const { matchedData } = require("express-validator");
 const sanitizeHtml = require("sanitize-html");
+const { handleHttpError } = require("../utils/handleError");
 
-const editUsers = async (req, res) => { // declarando controlador renderizar la vista admin-users
-
+// controlador para obtener la vista de edicion de usuarios
+const editUsers = async (req, res) => {
   try {
     const user = req.session.data.user;
     const usersData = await usersModel.find({});
-    const alerts = req.session.alerts || [];
-    delete req.session.alerts; // eliminar los mensajes de alerta después de obtenerlos
-    res.render("admin-users", { usersData, alerts, user, main: false });
+    res.json({ usersData, user });
   } catch (e) {
-    req.session.alert = "Error al intentar obtener usuarios";
-    return res.redirect("/admin/users");
+    handleHttpError(res, "Error al obtener la vista editUsers", 500);
   }
 };
 
-const addFile = async (req, res) => { // declarando controlador para renderizar la vista add-file
+// controlador para obtener la vista del formulario de agregar archivo
+const addFile = async (req, res) => {
   try {
     const user = req.session.data.user;
-    res.render("add-file", { user, main: false });
+    res.json({ user });
   } catch (e) {
-    req.session.alert = "Error al intentar agregar archivo";
-    return res.redirect("/admin/files");
+    handleHttpError(res, "Error al obtener la vista addFile", 500);
   }
 };
 
-const editFiles = async (req, res) => { // declarando controlador para renderizar la vista admin-files
+// controlador para obtener la vista de edicion de archivos
+const editFiles = async (req, res) => {
   try {
     const user = req.session.data.user;
     const filesData = await filesModel.find({});
-    const alerts = req.session.alerts || [];
-    delete req.session.alerts; // eliminar los mensajes de alerta después de obtenerlos
-    res.render("admin-files", { filesData, alerts, user, main: false });
+    res.json({ filesData, user });
   } catch (e) {
-    req.session.alert = "Error al intentar obtener archivos";
-    return res.redirect("/admin/files");
+    handleHttpError(res, "Error al obtener la vista editFiles", 500);
   }
 };
 
-const addUser = async (req, res) => { // declarando controlador para renderizar la vista add-user
+// controlador para obtener la vista del formulario de agregar usuario
+const addUser = async (req, res) => {
   try {
     const user = req.session.data.user;
-    const alerts = req.session.alerts || [];
-    delete req.session.alerts; // eliminar los mensajes de alerta después de obtenerlos
-    res.render("add-user", { user, alerts, main: false });
+    res.json({ user });
   } catch (e) {
-    req.session.alert = "Error al intentar agregar usuario";
-    return res.redirect("/admin/users");
+    handleHttpError(res, "Error al obtener la vista addUser", 500);
   }
 };
 
-const editUser = async (req, res) => { // declarando controlador para renderizar la vista edit-user
+// controlador para obtener la vista de edicion de datos de usuario
+const editUser = async (req, res) => {
   try {
     const { id } = matchedData(req);
     const sanitizedId = sanitizeHtml(id);
 
     const userData = await usersModel.findById(sanitizedId);
-    const alert = req.session.alert;
-    delete req.session.alert; // eliminar el mensaje de alerta después de obtenerlo
     console.log(userData);
-    res.render("edit-user", { alert, userData });
+    res.json({ userData });
   } catch (e) {
-    req.session.alert = "Error al intentar editar usuario";
-    return res.redirect("/admin/user");
+    handleHttpError(res, "Error al obtener la vista editUser", 500);
   }
 };
 
+// controlador para obtener la vista de archivo
 const getFile = async (req, res) => {
   try {
     const { tittle } = req.body;
     const user = req.session.data.user;
     const filesData = await filesModel.find({ tittle });
-    const alerts = req.session.alerts || [];
-    delete req.session.alerts;
-    res.render("admin-files", { alerts, filesData, user, main: false });
+    res.json({ filesData, user });
   } catch (e) {
-    req.session.alerts = ["Error al intentar buscar el archivo"];
-    return res.redirect("/files");
+    handleHttpError(res, "Error al obtener la vista de getFile ", 500);
   }
 }
 
+// controlador para obtener la vista de usuario
 const getUser = async (req, res) => {
   try {
     const { matricula } = req.body;
     const user = req.session.data.user;
     const usersData = await usersModel.find({ matricula });
-    const alerts = req.session.alerts || [];
-    delete req.session.alerts;
-    res.render("admin-users", { alerts, usersData, user, main: false });
+    res.json({ usersData, user });
   } catch (e) {
-    req.session.alerts = ["Error al intentar buscar el archivo"];
-    return res.redirect("/files");
+    handleHttpError(res, "Error al obtener la vista getUser", 500);
   }
 }
 

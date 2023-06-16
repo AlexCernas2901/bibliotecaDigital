@@ -1,12 +1,12 @@
+// controlador de panel de inicio de sesion
 const login = (req, res) => {
-  const alerts = req.session.alerts || [];
-  delete req.session.alerts; // eliminar las alertas después de mostrarlas
-  res.render("login", { alerts });
+  res.json("login")
 };
 
-const logout = (req, res) => { // cerrar session
+// controlador para cerrar sesion (falta eliminar el token)
+const logout = (req, res) => {
   req.session.destroy((err) => {
-    res.redirect("/login");
+    res.json("logout");
   });
 };
 

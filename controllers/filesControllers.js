@@ -3,48 +3,46 @@ const { matchedData } = require("express-validator");
 const { filesModel } = require("../models");
 const PUBLIC_URL = process.env.PUBLIC_URL;
 const MEDIA_PATH = `${__dirname}/../storage`;
+const { handleHttpError } = require("../utils/handleError");
 
-const getFiles = async (req, res) => { // declarando controlador para obtener los archivos
+// Controlador para obtener archivos
+const getFiles = async (req, res) => {
   try {
     const user = req.session.data.user;
     const filesData = await filesModel.find({});
     console.log(user, filesData);
-    const alerts = req.session.alerts || [];
-    delete req.session.alerts;
-    res.render("files", { alerts, filesData, user, main: true });
+    res.json({ filesData, user, main: true });
   } catch (e) {
-    req.session.alerts = ["Error al intentar obtener archivos"];
-    return res.redirect("/files");
+    handleHttpError(res, "Error al obtener archivos");
   }
 };
 
-const getFileByName = async (req, res) => { // declarando controlador para seleccionar un archivo por su titulo
+// Controlador para obtener un archivo por nombre
+const getFileByName = async (req, res) => {
   try {
     const { tittle } = req.body;
     const user = req.session.data.user;
     const filesData = await filesModel.find({ tittle });
-    const alerts = req.session.alerts || [];
-    delete req.session.alerts;
-    res.render("files", { alerts, filesData, user, main: false });
+    res.json({ filesData, user, main: false });
   } catch (e) {
-    req.session.alerts = ["Error al intentar buscar el archivo"];
-    return res.redirect("/files");
+    handleHttpError(res, "Error archivo no encontrado");
   }
 };
 
-const getFile = async (req, res) => { // declarando controlador para seleccionar archivo por id
+// Controlador para obtener un archivo por ID
+const getFile = async (req, res) => {
   try {
     const { id } = matchedData(req);
     const data = await filesModel.findById(id);
     console.log(data);
-    res.send({ data });
+    res.json({ data });
   } catch (e) {
-    req.session.alerts = ["Error al intentar obtener archivo"];
-    return res.redirect("/admin/files");
+    handleHttpError(res, "Error archivo no encontrado");
   }
 };
 
-const deleteFile = async (req, res) => { // declarando controlador para eliminar un archivo
+// Controlador para eliminar un archivo
+const deleteFile = async (req, res) => {
   try {
     const { id } = matchedData(req);
     const data = await filesModel.findById(id);
@@ -54,19 +52,17 @@ const deleteFile = async (req, res) => { // declarando controlador para eliminar
     fs.unlink(filePath, (err) => {
       if (err) {
         console.error(err);
-        req.session.alerts = ["Error al eliminar el archivo físico"];
-        return res.redirect("/admin/files");
+        handleHttpError(res, "Error eliminar archivo");
       }
-      req.session.alerts = []; // Limpiar los mensajes de alerta antes de enviar la respuesta
       res.redirect("/admin/files");
     });
   } catch (e) {
-    req.session.alerts = ["Error al intentar eliminar el archivo"];
-    return res.redirect("/admin/files");
+    handleHttpError(res, "Error eliminar archivo");
   }
 };
 
-const createFile = async (req, res) => { // declarando controlador para crear un nuevo archivo
+// Controlador para crear un archivo
+const createFile = async (req, res) => {
   try {
     const { file } = req;
     const { tittle } = matchedData(req);
@@ -76,11 +72,9 @@ const createFile = async (req, res) => { // declarando controlador para crear un
       url: `${PUBLIC_URL}/${file.filename}`
     }
     const data = await filesModel.create(fileData);
-    req.session.alerts = []; // Limpiar los mensajes de alerta antes de enviar la respuesta
-    res.redirect("/admin/files");
+    res.json({ data });
   } catch (e) {
-    req.session.alerts = ["Error al intentar crear el archivo"]; // Establecer un nuevo array de alertas con el mensaje de error
-    return res.redirect("/admin/files");
+    handleHttpError(res, "Error al crear archivo");
   }
 };
 

@@ -1,27 +1,20 @@
-const { check, validationResult } = require("express-validator");
+const { check } = require("express-validator");
+const { validateResults } = require("../utils/handleValidator");
 
 const createFileValidator = [
   // validando titulo del archivo
   check("tittle").exists().notEmpty(),
   (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.redirect("/admin/files");
-    }
-    next();
-  },
+    return validateResults(req, res, next);
+  }
 ];
 
 const getFileWithIdValidator = [
   // validando id del archivo
   check("id").exists().notEmpty().isMongoId(),
   (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.redirect("/admin/files");
-    }
-    next();
-  },
+    return validateResults(req, res, next);
+  }
 ];
 
 const bodyFileValidator = [
@@ -32,12 +25,8 @@ const bodyFileValidator = [
     return true;
   }),
   (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.redirect("/admin/files");
-    }
-    next();
-  },
+    return validateResults(req, res, next);
+  }
 ];
 
 module.exports = {
