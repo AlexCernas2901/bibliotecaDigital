@@ -27,16 +27,28 @@ const getUserPasswordValidator = [
   }
 ];
 
+const verifyPassData = [
+  // validando para busqueda
+  check("currentPass").exists().notEmpty().isLength({ min: 10, max: 18 }),
+  check("newPass").exists().notEmpty().isLength({ min: 10, max: 18 }),
+  check("confirmPass").exists().notEmpty().isLength({ min: 10, max: 18 }),
+  (req, res, next) => {
+    return validateResults(req, res, next);
+  }
+];
+
 const matriculaValidator = [
+  // validando el campo matricula
   check("matricula").exists().notEmpty().isLength({ min: 8, max: 8 }),
   (req, res, next) => {
     return validateResults(req, res, next);
   }
-]
+];
 
 module.exports = {
   getUserWithIdValidator,
   getBodyUserValidator,
   getUserPasswordValidator,
-  matriculaValidator
+  matriculaValidator,
+  verifyPassData
 };

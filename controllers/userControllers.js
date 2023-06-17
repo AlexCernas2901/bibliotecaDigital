@@ -1,6 +1,6 @@
 const { usersModel } = require("../models");
 const { matchedData } = require("express-validator");
-const { encrypt } = require("../utils/handlePassword");
+const { encrypt, compare } = require("../utils/handlePassword");
 const { signToken } = require("../utils/handleJWT");
 const sanitizeHtml = require("sanitize-html");
 const { handleHttpError } = require("../utils/handleError");
@@ -12,8 +12,8 @@ const getUsers = async (req, res) => {
     const data = await usersModel.find({});
     console.log(data);
     res.json({ data, user });
-  } catch (e) {
-    handleHttpError(res, "Error al obtener usuarios");
+  } catch (error) {
+    handleHttpError(res, "Error al obtener usuarios", 500);
   }
 };
 
@@ -26,7 +26,7 @@ const createUser = async (req, res) => {
     // verificar si ya existe un usuario con la misma matrícula
     const existingUser = await usersModel.findOne({ matricula: userData.matricula });
     if (existingUser) {
-      return handleHttpError(res, "Error matricula en uso");
+      return handleHttpError(res, "Error matricula en uso", 400);
     }
 
     const savedUser = await usersModel.create({
@@ -43,8 +43,8 @@ const createUser = async (req, res) => {
 
     console.log(responseData);
     res.redirect("/admin/users");
-  } catch (e) {
-    handleHttpError(res, "Error al crear usuario");
+  } catch (error) {
+    handleHttpError(res, "Error al crear usuario", 500);
   }
 };
 
@@ -56,8 +56,8 @@ const editUser = async (req, res) => {
     const data = await usersModel.findById({ _id: id });
     console.log(data);
     res.json({ data });
-  } catch (e) {
-    handleHttpError(res, "Error al editar usuario");
+  } catch (error) {
+    handleHttpError(res, "Error al editar usuario", 500);
   }
 };
 
@@ -69,8 +69,8 @@ const getUser = async (req, res) => {
     const data = await usersModel.findById(id);
     console.log(data);
     res.json({ data });
-  } catch (e) {
-    handleHttpError(res, "Error al buscar usuario");
+  } catch (error) {
+    handleHttpError(res, "Error al buscar usuario", 500);
   }
 };
 
@@ -81,8 +81,8 @@ const deleteUser = async (req, res) => {
     const { id } = requestData;
     await usersModel.deleteOne({ _id: id });
     res.redirect("/admin/users");
-  } catch (e) {
-    handleHttpError(res, "Error al eliminar usuario");
+  } catch (error) {
+    handleHttpError(res, "Error al eliminar usuario", 500);
   }
 };
 
@@ -95,8 +95,8 @@ const updateUser = async (req, res) => {
     const data = await usersModel.findOneAndUpdate({ _id: id }, body);
     console.log(data);
     res.redirect("/admin/users");
-  } catch (e) {
-    handleHttpError(res, "Error al actualizar usuario");
+  } catch (error) {
+    handleHttpError(res, "Error al actualizar usuario", 500);
   }
 };
 
@@ -105,20 +105,47 @@ const editProfile = async (req, res) => {
   try {
     const user = req.session.data.user;
     res.json({ user });
-  } catch (e) {
-    handleHttpError(res, "Error vista editProfile");
+  } catch (error) {
+    handleHttpError(res, "Error vista editProfile", 500);
   }
 };
 
 // controlador para cambiar la contraseña
 const changePass = async (req, res) => {
   try {
-    // logica para cambio de contraseña (en desarrollo)
-    res.send("Hola");
-  } catch (e) {
-    handleHttpError(res, "Error al actualizar contraseña");
+    const user = req.session.data.user;
+    const requestData = matchedData(req);
+    const { currentPass, newPass, confirmPass } = requestData;
+
+    if (newPass == confirmPass) {
+      // buscar el usuario en la base de datos
+      const userObj = await usersModel.findById(user._id).select("+password");
+      if (userObj) {
+        // verificar la contraseña actual utilizando un método de hashing
+        const isCurrentPassValid = await compare(currentPass, userObj.password);
+        if (isCurrentPassValid) {
+          // generar un nuevo hash de la nueva contraseña
+          const newPassHash = await encrypt(newPass);
+
+          // actualizar la contraseña en la base de datos
+          await usersModel.findOneAndUpdate({ _id: user._id }, { password: newPassHash });
+
+          user.set("password", undefined, { strict: false });
+          user.set("matricula", undefined, { strict: false });
+
+          res.json({ user, newPass });
+          return
+        }
+      }
+    }
+
+    // si la validación falla o no se cumplen las condiciones, devolver un error
+    handleHttpError(res, "No se pudo cambiar la contraseña. Verifica tus datos.", 400);
+  } catch (error) {
+    handleHttpError(res, "Error al actualizar la contraseña", 500);
   }
 };
+
 
 module.exports = {
   getUser,

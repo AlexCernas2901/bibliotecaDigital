@@ -23,8 +23,8 @@ const authMiddleware = async (req, res, next) => {
     console.log('El usuario: ', user);
     
     next();
-  } catch (e) {
-    return handleHttpError(res, "Error al obtener usuarios", 500);
+  } catch (error) {
+    handleHttpError(res, "Error al obtener usuarios", 500);
   }
 };
 

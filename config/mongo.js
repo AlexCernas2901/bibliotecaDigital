@@ -15,7 +15,7 @@ const dbConnect = () => {// conexion a la base de datos
     });
 };
 
-// conexion local a la base de datos
+//  conexion local a la base de datos
 // const dbConnect = async () => { 
 //   try {
 //     await mongoose.connect('mongodb://127.0.0.1:27017/bibliotecaDigital');

@@ -5,7 +5,7 @@ const { usersModel } = require("../models");
 const sanitizeHtml = require("sanitize-html");
 const { handleHttpError } = require("../utils/handleError");
 
-// controlador para regustrar un nuevo usuario
+// controlador para registrar un nuevo usuario
 const registerController = async (req, res) => {
   try {
     req = matchedData(req);
@@ -26,7 +26,7 @@ const registerController = async (req, res) => {
     };
 
     res.json({ data });
-  } catch (e) {
+  } catch (error) {
     handleHttpError(res, "Error al registrar usuario", 500);
   }
 };
@@ -39,14 +39,14 @@ const loginController = async (req, res) => {
       .findOne({ matricula: requestData.matricula })
       .select("name matricula password role");
     if (!user) {
-      handleHttpError(res, "Error datos incorrectos", 400);
+      return handleHttpError(res, "Error datos incorrectos", 400);
     }
 
     const hashPassword = user.get("password");
     const check = await compare(requestData.password, hashPassword);
 
     if (!check) {
-      handleHttpError(res, "Error datos incorrectos", 400);
+      return handleHttpError(res, "Error datos incorrectos", 400);
     }
 
     user.set("password", undefined, { strict: false });
@@ -60,7 +60,7 @@ const loginController = async (req, res) => {
     req.session.data = data;
     console.log('data: ', data);
     res.json({ data });
-  } catch (e) {
+  } catch (error) {
     handleHttpError(res, "Error usuario no existe", 500);
   }
 };

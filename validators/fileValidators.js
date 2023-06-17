@@ -32,5 +32,5 @@ const bodyFileValidator = [
 module.exports = {
   bodyFileValidator,
   createFileValidator,
-  getFileWithIdValidator,
+  getFileWithIdValidator
 };

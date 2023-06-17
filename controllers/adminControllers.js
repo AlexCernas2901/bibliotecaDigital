@@ -10,7 +10,7 @@ const editUsers = async (req, res) => {
     const user = req.session.data.user;
     const usersData = await usersModel.find({});
     res.json({ usersData, user });
-  } catch (e) {
+  } catch (error) {
     handleHttpError(res, "Error al obtener la vista editUsers", 500);
   }
 };
@@ -20,7 +20,7 @@ const addFile = async (req, res) => {
   try {
     const user = req.session.data.user;
     res.json({ user });
-  } catch (e) {
+  } catch (error) {
     handleHttpError(res, "Error al obtener la vista addFile", 500);
   }
 };
@@ -31,7 +31,7 @@ const editFiles = async (req, res) => {
     const user = req.session.data.user;
     const filesData = await filesModel.find({});
     res.json({ filesData, user });
-  } catch (e) {
+  } catch (error) {
     handleHttpError(res, "Error al obtener la vista editFiles", 500);
   }
 };
@@ -41,7 +41,7 @@ const addUser = async (req, res) => {
   try {
     const user = req.session.data.user;
     res.json({ user });
-  } catch (e) {
+  } catch (error) {
     handleHttpError(res, "Error al obtener la vista addUser", 500);
   }
 };
@@ -55,7 +55,7 @@ const editUser = async (req, res) => {
     const userData = await usersModel.findById(sanitizedId);
     console.log(userData);
     res.json({ userData });
-  } catch (e) {
+  } catch (error) {
     handleHttpError(res, "Error al obtener la vista editUser", 500);
   }
 };
@@ -67,7 +67,7 @@ const getFile = async (req, res) => {
     const user = req.session.data.user;
     const filesData = await filesModel.find({ tittle });
     res.json({ filesData, user });
-  } catch (e) {
+  } catch (error) {
     handleHttpError(res, "Error al obtener la vista de getFile ", 500);
   }
 }
@@ -79,7 +79,7 @@ const getUser = async (req, res) => {
     const user = req.session.data.user;
     const usersData = await usersModel.find({ matricula });
     res.json({ usersData, user });
-  } catch (e) {
+  } catch (error) {
     handleHttpError(res, "Error al obtener la vista getUser", 500);
   }
 }

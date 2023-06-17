@@ -230,13 +230,22 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDYxNjk0ODQyNzY3MTBkYzBkNGJlOWQiLCJyb2xlIjpbImFkbWluIl0sImlhdCI6MTY4NDEwNjA3NSwiZXhwIjoxNjg0MTA5Njc1fQ.qjcw-RCnyhBf4YZUmpuJtmmVHExqqXdtPsLCkV6OnqM",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDhiNjY0Y2MxNGY1ZDAxMmFjNzhmNjUiLCJyb2xlIjpbImFkbWluIl0sImlhdCI6MTY4Njk1MDMyNSwiZXhwIjoxNjg2OTUzOTI1fQ.iCqQpM9rZEQON5FsXt99HfOIgWOT6whLn6cDydxosZ8",
 									"type": "string"
 								}
 							]
 						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPass\": \"Pedregal123\",\r\n    \"newPass\": \"Pedregal123*\",\r\n    \"confirmPass\": \"Pedregal123*\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://localhost:3000/users/changePass",
 							"protocol": "http",

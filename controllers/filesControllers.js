@@ -12,8 +12,8 @@ const getFiles = async (req, res) => {
     const filesData = await filesModel.find({});
     console.log(user, filesData);
     res.json({ filesData, user, main: true });
-  } catch (e) {
-    handleHttpError(res, "Error al obtener archivos");
+  } catch (error) {
+    handleHttpError(res, "Error al obtener archivos", 500);
   }
 };
 
@@ -24,8 +24,8 @@ const getFileByName = async (req, res) => {
     const user = req.session.data.user;
     const filesData = await filesModel.find({ tittle });
     res.json({ filesData, user, main: false });
-  } catch (e) {
-    handleHttpError(res, "Error archivo no encontrado");
+  } catch (error) {
+    handleHttpError(res, "Error archivo no encontrado", 404);
   }
 };
 
@@ -36,8 +36,8 @@ const getFile = async (req, res) => {
     const data = await filesModel.findById(id);
     console.log(data);
     res.json({ data });
-  } catch (e) {
-    handleHttpError(res, "Error archivo no encontrado");
+  } catch (error) {
+    handleHttpError(res, "Error archivo no encontrado", 404);
   }
 };
 
@@ -52,12 +52,12 @@ const deleteFile = async (req, res) => {
     fs.unlink(filePath, (err) => {
       if (err) {
         console.error(err);
-        handleHttpError(res, "Error eliminar archivo");
+        handleHttpError(res, "Error eliminar archivo", 500);
       }
       res.redirect("/admin/files");
     });
-  } catch (e) {
-    handleHttpError(res, "Error eliminar archivo");
+  } catch (error) {
+    handleHttpError(res, "Error eliminar archivo", 500);
   }
 };
 
@@ -73,8 +73,8 @@ const createFile = async (req, res) => {
     }
     const data = await filesModel.create(fileData);
     res.json({ data });
-  } catch (e) {
-    handleHttpError(res, "Error al crear archivo");
+  } catch (error) {
+    handleHttpError(res, "Error al crear archivo", 500);
   }
 };
 

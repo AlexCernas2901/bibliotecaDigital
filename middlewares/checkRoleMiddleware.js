@@ -11,7 +11,7 @@ const checkRol = (roles) => (req, res, next) => {
       return handleHttpError(res, "Permiso denegado", 403);
     }
     next();
-  } catch (e) {
+  } catch (error) {
     return handleHttpError(res, "Error al obtener usuarios", 500);
   }
 };

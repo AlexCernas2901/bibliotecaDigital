@@ -8,7 +8,7 @@ const registerValidator = [
   check("matricula").exists().notEmpty().isNumeric({ min: 8, max: 8 }),
   (req, res, next) => {
     return validateResults(req, res, next);
-}
+  }
 ];
 
 const loginValidator = [
@@ -17,7 +17,10 @@ const loginValidator = [
   check("password").exists().notEmpty().isLength({ min: 10, max: 18 }),
   (req, res, next) => {
     return validateResults(req, res, next);
-}
+  }
 ];
 
-module.exports = { registerValidator, loginValidator };
+module.exports = { 
+  registerValidator,
+  loginValidator  
+};
