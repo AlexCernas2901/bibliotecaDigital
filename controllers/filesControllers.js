@@ -8,10 +8,11 @@ const { handleHttpError } = require("../utils/handleError");
 // Controlador para obtener archivos
 const getFiles = async (req, res) => {
   try {
+    const token = req.session.data.token;
     const user = req.session.data.user;
     const filesData = await filesModel.find({});
-    console.log(user, filesData);
-    res.json({ filesData, user });
+    console.log(filesData, user, token);
+    res.json({ filesData, user, token });
   } catch (error) {
     handleHttpError(res, "Error al obtener archivos", 500);
   }
