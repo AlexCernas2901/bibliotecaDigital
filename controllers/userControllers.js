@@ -93,8 +93,10 @@ const updateUser = async (req, res) => {
     const { id, ...body } = requestData;
     console.log(id, body);
     const data = await usersModel.findOneAndUpdate({ _id: id }, body);
-    console.log(data);
-    res.redirect("/admin/users");
+    if(!data.body || !data._id){
+      return handleHttpError(res, "El usuario no existe", 404);
+    }
+    res.json(data);
   } catch (error) {
     handleHttpError(res, "Error al actualizar usuario", 500);
   }

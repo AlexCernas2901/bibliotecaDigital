@@ -11,7 +11,7 @@ const getFiles = async (req, res) => {
     const user = req.session.data.user;
     const filesData = await filesModel.find({});
     console.log(user, filesData);
-    res.json({ filesData, user, main: true });
+    res.json({ filesData, user });
   } catch (error) {
     handleHttpError(res, "Error al obtener archivos", 500);
   }
@@ -23,7 +23,7 @@ const getFileByName = async (req, res) => {
     const { tittle } = req.body;
     const user = req.session.data.user;
     const filesData = await filesModel.find({ tittle });
-    res.json({ filesData, user, main: false });
+    res.json({ filesData, user });
   } catch (error) {
     handleHttpError(res, "Error archivo no encontrado", 404);
   }

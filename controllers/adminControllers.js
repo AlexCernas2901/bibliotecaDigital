@@ -51,8 +51,10 @@ const editUser = async (req, res) => {
   try {
     const { id } = matchedData(req);
     const sanitizedId = sanitizeHtml(id);
-
     const userData = await usersModel.findById(sanitizedId);
+    if(!userData){
+      return handleHttpError(res, "El usuario no existe", 404);
+    }
     console.log(userData);
     res.json({ userData });
   } catch (error) {
